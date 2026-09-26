@@ -69,9 +69,9 @@ User Typing Input
 
 ---
 
-## 👥 Contributors & Credits
-* **Sohaib** — Lead Machine Learning Architecture & End-to-End Pipeline
-* **Abdulatif Asiri** — Interface & Front-End Integration
+## 👥 Team & Contributions
+* **Sohaib** — Lead Engineering: System Architecture, ML Model Development, Backend & Interface Implementation.
+* **Abdulatif Asiri** — Project Pitching, Presentation Delivery & Domain Communication.
 
 ---
 
