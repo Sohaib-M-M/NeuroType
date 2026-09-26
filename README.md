@@ -58,7 +58,7 @@ User Typing Input
 
 ### Installation & Run
 1. Clone the repository:
-   git clone https://github.com/YourUsername/NeuroType.git
+   git clone https://github.com/Sohaib-M-M/NeuroType.git
    cd NeuroType
 
 2. Install dependencies:
@@ -71,7 +71,7 @@ User Typing Input
 
 ## 👥 Contributors & Credits
 * **Sohaib** — Lead Machine Learning Architecture & End-to-End Pipeline
-* **Co-Developer Name** — Interface & Front-End Integration
+* **Abdulatif Asiri** — Interface & Front-End Integration
 
 ---
 
