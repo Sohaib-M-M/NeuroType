@@ -5,10 +5,10 @@ from sklearn.preprocessing import RobustScaler
 import joblib
 import os
 
-# استدعاء المكون الجاهز من الملف الذي أنشأناه في الخارج
+ 
 from components_loader import enrollment_plugin
 
-# إعدادات الصفحة
+ 
 st.set_page_config(page_title="System Calibration", page_icon="⚙️", layout="wide")
 
 st.title("⚙️ Keystroke Dynamics Calibration")
@@ -17,10 +17,10 @@ st.divider()
 
 st.info("To train the system on a new operator or a new environment, type the emergency command **15 times**. The system enforces a mandatory 3-second cooldown to capture natural muscle memory.")
 
-# استدعاء واجهة الجافا سكريبت
+ 
 enrollment_data = enrollment_plugin(height=320)
 
-# معالجة البيانات عند الانتهاء من 15 محاولة
+ 
 if enrollment_data:
     st.warning("⏳ Training Neural Engine on provided physical dynamics...")
     
@@ -59,22 +59,22 @@ if enrollment_data:
         
     X_enroll = pd.DataFrame(features_list).fillna(0)
     
-    # 1. توحيد المقاييس (Feature Scaling)
+     
     scaler = RobustScaler()
     X_scaled = scaler.fit_transform(X_enroll)
     
-    # 2. تضييق دائرة القبول برفع نسبة التلوث إلى 5% (Contamination=0.05)
+     
     model = IsolationForest(n_estimators=150, contamination=0.05, random_state=42)
     model.fit(X_scaled)
     
-    # 3. حفظ المُسوّي (Scaler) مع النموذج
+     
     exported_data = {
         'model': model,
         'scaler': scaler,
         'features': X_enroll.columns.tolist()
     }
     
-    # تحديد مسار الحفظ في المجلد الرئيسي
+     
     parent_dir = os.path.dirname(os.path.dirname(__file__))
     model_save_path = os.path.join(parent_dir, 'biometric_model.pkl')
     

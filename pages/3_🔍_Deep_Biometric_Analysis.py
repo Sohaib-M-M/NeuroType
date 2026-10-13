@@ -3,10 +3,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# استدعاء المكون من مدير المكونات
+ 
 from components_loader import free_typing_plugin
 
-# إعدادات الصفحة
+ 
 st.set_page_config(page_title="Deep Biometric Analysis", page_icon="🔍", layout="wide")
 
 st.title("🔍 Deep Biometric Analysis")
@@ -15,7 +15,7 @@ st.divider()
 
 st.info("Write any text in the box below. The system will ignore *what* you write, and focus purely on *how* your muscle memory executes the keystrokes.")
 
-# استدعاء صندوق النص الحر
+ 
 raw_data = free_typing_plugin(height=280)
 
 if raw_data:
@@ -23,15 +23,15 @@ if raw_data:
     
     st.success("✅ Neurological mapping complete! Here is your unique biometric footprint:")
     
-    # --- استخراج المؤشرات الرئيسية (KPIs) ---
+     
     col1, col2, col3, col4 = st.columns(4)
     
     total_time_minutes = (df['hold_time'].sum() + df['flight_time'].sum()) / 60.0
     chars_typed = len(df)
-    # حساب الكلمات في الدقيقة (المعيار العالمي: الكلمة = 5 أحرف)
+     
     wpm = (chars_typed / 5) / (total_time_minutes if total_time_minutes > 0 else 1)
     
-    avg_hold = df['hold_time'].mean() * 1000  # تحويل إلى ملي ثانية
+    avg_hold = df['hold_time'].mean() * 1000   
     avg_flight = df['flight_time'].mean() * 1000
     rhythm_variance = df['flight_time'].std()
     
@@ -42,14 +42,14 @@ if raw_data:
     
     st.divider()
     
-    # --- الرسوم البيانية العميقة ---
+     
     st.markdown("### 📊 Micro-Dynamics Breakdown")
     
-    # رسم بياني تفاعلي من Streamlit للنبض الحركي
+     
     st.markdown("#### Muscle Rhythm Over Time (Sequential Keystrokes)")
     st.line_chart(df[['hold_time', 'flight_time']].rename(columns={'hold_time': 'Hold Time (s)', 'flight_time': 'Flight Time (s)'}))
     
-    # رسوم Matplotlib متقدمة مع ضبط الألوان للوضع الداكن
+     
     colA, colB = st.columns(2)
     
     with colA:
@@ -58,7 +58,7 @@ if raw_data:
         sns.histplot(df['hold_time'], kde=True, color='#33ff99', ax=ax1)
         ax1.set_xlabel('Hold Time (Seconds)')
         ax1.set_ylabel('Frequency')
-        # دمج الألوان مع تصميم SCADA
+         
         ax1.set_facecolor('#0c0f11')
         fig1.patch.set_facecolor('#0c0f11')
         ax1.tick_params(colors='#c7d1d6')

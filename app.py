@@ -2,13 +2,11 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-# استدعاء المكون من مدير المكونات الخارجي
 from components_loader import keystroke_plugin
 
-# 1. إعداد الصفحة
 st.set_page_config(page_title="HYDRA-1 SCADA Control", page_icon="☢️", layout="wide", initial_sidebar_state="collapsed")
 
-# 2. حقن كود CSS
+ 
 st.markdown("""
     <style>
         .block-container { padding: 0rem !important; max-width: 100% !important; }
@@ -27,25 +25,25 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# 3. تحميل النموذج والمُسوّي (Scaler)
+ 
 @st.cache_resource
 def load_model():
     data = joblib.load('biometric_model.pkl')
-    # نستخدم data.get لتجنب انهيار النظام إذا كان الملف القديم ما زال في الذاكرة
+     
     scaler = data.get('scaler', None)
     return data['model'], scaler, data['features']
 
 ai_model, ai_scaler, required_features = load_model()
 
-# 4. عرض لوحة SCADA
+ 
 raw_keystrokes = keystroke_plugin(height=1100, key="scada_main_terminal")
 
-# 5. معالجة البيانات
+ 
 if raw_keystrokes:
     try:
         test_df = pd.DataFrame(raw_keystrokes)
         
-        # حماية ضد البصمات المبتورة أو الفارغة
+         
         if len(test_df) < 5:
             st.warning("⚠️ Incomplete biometrics captured. Please type the command completely and naturally.")
         else:
@@ -77,18 +75,18 @@ if raw_keystrokes:
                     X_test_live[col] = 0
             X_test_live = X_test_live[required_features]
             
-            # تطبيق الـ Scaler إذا كان موجوداً
+             
             if ai_scaler:
                 X_test_live = pd.DataFrame(ai_scaler.transform(X_test_live), columns=X_test_live.columns)
             
             prediction = ai_model.predict(X_test_live)
             confidence_score = ai_model.decision_function(X_test_live)[0]
             
-            # 🛑 هندسة عتبة الأمان (Security Threshold)
+             
             SECURITY_THRESHOLD = 0.0100
             is_authorized = confidence_score >= SECURITY_THRESHOLD
             
-            # --- تصميم الواجهة البصرية المتفاعلة (Dynamic UI) ---
+             
             theme_color = "#33ff99" if is_authorized else "#ff3b47"
             bg_color = "rgba(51, 255, 153, 0.05)" if is_authorized else "rgba(255, 59, 71, 0.05)"
             status_text = "OVERRIDE AUTHORIZED: Operator typing dynamics verified." if is_authorized else "SYSTEM LOCKDOWN: Unauthorized physical access detected."
@@ -96,7 +94,7 @@ if raw_keystrokes:
             
             bar_pct = min(100, max(0, (confidence_score / 0.08) * 100))
             
-            # كود HTML مصمم بدون مسافات بادئة لمنع ظهور صندوق الأكواد
+             
             custom_dashboard = f"""
 <div style="border: 1px solid {theme_color}; background-color: {bg_color}; padding: 24px; margin-top: 10px; font-family: 'SFMono-Regular', ui-monospace, Menlo, Consolas, monospace; text-align: center; box-shadow: 0 0 20px {bg_color}, inset 0 0 15px {bg_color};">
 <div style="color: #c7d1d6; font-size: 13px; letter-spacing: 3px; text-transform: uppercase;">Neurological Confidence Score</div>
@@ -114,7 +112,7 @@ if raw_keystrokes:
                 st.markdown(custom_dashboard, unsafe_allow_html=True)
                 
     except Exception as e:
-        # التقاط أي انهيار صامت وعرضه للمطور
+         
         st.error(f"⚠️ System encountered a data parsing anomaly. Please try again. ({str(e)})")
 
 # --- Discreet Developer Credit ---
